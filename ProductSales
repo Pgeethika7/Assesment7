@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ProductSales {
+    public static void main(String[] args) {
+        List<Integer> sales = new ArrayList<>();
+        sales.add(30);
+        sales.add(75);
+        sales.add(120);
+        sales.add(45);
+        sales.add(220);
+        sales.add(175);
+        sales.add(55);
+
+        Map<String, Integer> count = new HashMap<>();
+        Map<String, Double> revenue = new HashMap<>();
+        count.put("0-50", 0);
+        count.put("50-100", 0);
+        count.put("100-200", 0);
+        revenue.put("0-50", 0.0);
+        revenue.put("50-100", 0.0);
+        revenue.put("100-200", 0.0);
+
+        for (Integer sale : sales) {
+            if (sale >= 0 && sale <= 50) {
+                count.put("0-50", count.get("0-50") + 1);
+                revenue.put("0-50", revenue.get("0-50") + sale);
+            } else if (sale > 50 && sale <= 100) {
+                count.put("50-100", count.get("50-100") + 1);
+                revenue.put("50-100", revenue.get("50-100") + sale);
+            } else if (sale > 100 && sale <= 200) {
+                count.put("100-200", count.get("100-200") + 1);
+                revenue.put("100-200", revenue.get("100-200") + sale);
+            }
+        }
+
+        System.out.println("Number of products sold within each price range:");
+        System.out.println(count);
+        System.out.println("Total revenue generated within each price range:");
+        System.out.println(revenue);
+    }
+}
