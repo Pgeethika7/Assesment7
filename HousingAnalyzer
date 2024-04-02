@@ -1,0 +1,77 @@
+import java.util.*;
+
+public class HousingAnalyzer {
+    
+    public static void main(String[] args) {
+        // Example housing data (price, square footage)
+        List<double[]> housingData = Arrays.asList(
+            new double[]{150000, 1200},
+            new double[]{180000, 1400},
+            new double[]{220000, 1600},
+            new double[]{250000, 1800},
+            new double[]{280000, 2000},
+            new double[]{320000, 2200},
+            new double[]{350000, 2400},
+            new double[]{380000, 2600},
+            new double[]{420000, 2800},
+            new double[]{450000, 3000}
+        );
+        
+        // Analyze housing data
+        Map<String, List<double[]>> result = analyzeHousingData(housingData);
+        
+        // Display results
+        for (Map.Entry<String, List<double[]>> entry : result.entrySet()) {
+            String priceRange = entry.getKey();
+            List<double[]> housesInPriceRange = entry.getValue();
+            double averageSquareFootage = calculateAverageSquareFootage(housesInPriceRange);
+            System.out.println("Price Range: " + priceRange + ", Number of houses: " + housesInPriceRange.size() + ", Average square footage: " + averageSquareFootage);
+        }
+    }
+    
+    public static Map<String, List<double[]>> analyzeHousingData(List<double[]> housingData) {
+        Map<String, List<double[]>> result = new HashMap<>();
+        
+        for (double[] house : housingData) {
+            double price = house[0];
+            double squareFootage = house[1];
+            
+            String priceRange = getPriceRange(price);
+            
+            if (!result.containsKey(priceRange)) {
+                result.put(priceRange, new ArrayList<>());
+            }
+            
+            result.get(priceRange).add(house);
+        }
+        
+        return result;
+    }
+    
+    public static String getPriceRange(double price) {
+        if (price >= 100000 && price < 200000) {
+            return "$100,000 - $199,999";
+        } else if (price >= 200000 && price < 300000) {
+            return "$200,000 - $299,999";
+        } else if (price >= 300000 && price < 400000) {
+            return "$300,000 - $399,999";
+        } else if (price >= 400000 && price < 500000) {
+            return "$400,000 - $499,999";
+        } else {
+            return "Above $500,000";
+        }
+    }
+    
+    public static double calculateAverageSquareFootage(List<double[]> houses) {
+        if (houses.isEmpty()) {
+            return 0.0;
+        }
+        
+        double totalSquareFootage = 0;
+        for (double[] house : houses) {
+            totalSquareFootage += house[1]; // Index 1 contains square footage
+        }
+        
+        return totalSquareFootage / houses.size();
+    }
+}
