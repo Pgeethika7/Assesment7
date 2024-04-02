@@ -1,0 +1,70 @@
+import java.util.*;
+
+public class EmployeeWorkHoursAnalyzer {
+    
+    public static void main(String[] args) {
+        // Example work hours
+        List<List<Integer>> workHoursList = Arrays.asList(
+            Arrays.asList(42, 38, 40, 45, 37, 41, 39), // Employee 1
+            Arrays.asList(40, 40, 40, 40, 40, 40, 40), // Employee 2
+            Arrays.asList(38, 35, 36, 39, 37, 38, 40)  // Employee 3
+        );
+        
+        // Analyze work hours
+        Map<String, List<Integer>> result = analyzeWorkHours(workHoursList);
+        
+        // Display results
+        for (Map.Entry<String, List<Integer>> entry : result.entrySet()) {
+            String group = entry.getKey();
+            List<Integer> averageHoursPerDay = entry.getValue();
+            System.out.println("Group: " + group + ", Number of employees: " + averageHoursPerDay.size() + ", Average hours per day: " + calculateAverage(averageHoursPerDay));
+        }
+    }
+    
+    public static Map<String, List<Integer>> analyzeWorkHours(List<List<Integer>> workHoursList) {
+        Map<String, List<Integer>> result = new HashMap<>();
+        List<Integer> moreThan40Hours = new ArrayList<>();
+        List<Integer> exactly40Hours = new ArrayList<>();
+        List<Integer> lessThan40Hours = new ArrayList<>();
+        
+        for (List<Integer> workHours : workHoursList) {
+            int totalHours = calculateTotalHours(workHours);
+            int averageHoursPerDay = totalHours / workHours.size();
+            
+            if (totalHours > 40 * workHours.size()) {
+                moreThan40Hours.add(averageHoursPerDay);
+            } else if (totalHours == 40 * workHours.size()) {
+                exactly40Hours.add(averageHoursPerDay);
+            } else {
+                lessThan40Hours.add(averageHoursPerDay);
+            }
+        }
+        
+        result.put("More than 40 hours", moreThan40Hours);
+        result.put("Exactly 40 hours", exactly40Hours);
+        result.put("Less than 40 hours", lessThan40Hours);
+        
+        return result;
+    }
+    
+    public static int calculateTotalHours(List<Integer> workHours) {
+        int totalHours = 0;
+        for (int hours : workHours) {
+            totalHours += hours;
+        }
+        return totalHours;
+    }
+    
+    public static double calculateAverage(List<Integer> numbers) {
+        if (numbers.isEmpty()) {
+            return 0.0;
+        }
+        
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        
+        return (double) sum / numbers.size();
+    }
+}
