@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class WeatherData {
+    public static void main(String[] args) {
+        List<Weather> data = new ArrayList<>();
+        data.add(new Weather(5, 60));
+        data.add(new Weather(-3, 80));
+        data.add(new Weather(12, 45));
+        data.add(new Weather(2, 70));
+        data.add(new Weather(18, 30));
+        data.add(new Weather(-5, 85));
+
+        Map<String, Integer> tempCount = new HashMap<>();
+        Map<String, Double> tempAvg = new HashMap<>();
+        tempCount.put("<0", 0);
+        tempCount.put("0-10", 0);
+        tempCount.put("10-20", 0);
+        tempAvg.put("<0", 0.0);
+        tempAvg.put("0-10", 0.0);
+        tempAvg.put("10-20", 0.0);
+
+        for (Weather w : data) {
+            if (w.temperature < 0) {
+                tempCount.put("<0", tempCount.get("<0") + 1);
+                tempAvg.put("<0", tempAvg.get("<0") + w.humidity);
+            } else if (w.temperature >= 0 && w.temperature <= 10) {
+                tempCount.put("0-10", tempCount.get("0-10") + 1);
+                tempAvg.put("0-10", tempAvg.get("0-10") + w.humidity);
+            } else if (w.temperature > 10 && w.temperature <= 20) {
+                tempCount.put("10-20", tempCount.get("10-20") + 1);
+                tempAvg.put("10-20", tempAvg.get("10-20") + w.humidity);
+            }
+        }
+
+        for (String key : tempCount.keySet()) {
+            tempAvg.put(key, tempAvg.get(key) / tempCount.get(key));
+        }
+
+        System.out.println("Number of days with temperatures within each range:");
+        System.out.println(tempCount);
+        System.out.println("Average humidity for each temperature range:");
+        System.out.println(tempAvg);
+    }
+
+    private static class Weather {
+        int temperature;
+        int humidity;
+
+        Weather(int temperature, int humidity) {
+            this.temperature = temperature;
+            this.humidity = humidity;
+        }
+    }
+}
