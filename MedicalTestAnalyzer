@@ -1,0 +1,56 @@
+import java.util.*;
+
+public class MedicalTestAnalyzer {
+    
+    public static void main(String[] args) {
+      
+        List<Double> testResults = Arrays.asList(78.5, 92.3, 105.7, 62.8, 89.1, 110.2, 98.6, 120.5, 70.4, 82.9);
+        
+     
+        Map<String, List<Double>> resultRanges = analyzeTestResults(testResults);
+        
+       
+        for (Map.Entry<String, List<Double>> entry : resultRanges.entrySet()) {
+            String range = entry.getKey();
+            List<Double> resultsInRange = entry.getValue();
+            double average = calculateAverage(resultsInRange);
+            System.out.println("Range: " + range + ", Number of patients: " + resultsInRange.size() + ", Average: " + average);
+        }
+    }
+    
+    public static Map<String, List<Double>> analyzeTestResults(List<Double> testResults) {
+        Map<String, List<Double>> resultRanges = new HashMap<>();
+        List<Double> normalRange = new ArrayList<>();
+        List<Double> borderlineRange = new ArrayList<>();
+        List<Double> highRange = new ArrayList<>();
+        
+        for (Double result : testResults) {
+            if (result >= 70 && result <= 100) {
+                normalRange.add(result);
+            } else if (result > 100 && result <= 110) {
+                borderlineRange.add(result);
+            } else if (result > 110) {
+                highRange.add(result);
+            }
+        }
+        
+        resultRanges.put("Normal", normalRange);
+        resultRanges.put("Borderline", borderlineRange);
+        resultRanges.put("High", highRange);
+        
+        return resultRanges;
+    }
+    
+    public static double calculateAverage(List<Double> numbers) {
+        if (numbers.isEmpty()) {
+            return 0.0;
+        }
+        
+        double sum = 0.0;
+        for (Double number : numbers) {
+            sum += number;
+        }
+        
+        return sum / numbers.size();
+    }
+}
